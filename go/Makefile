@@ -1,2 +1,2 @@
 setup:
-	../env.sh go build -o app
+	go build -o app
