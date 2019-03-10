@@ -108,6 +108,7 @@ var (
 		},
 	}
 	tmpl = template.Must(template.New("tmpl").Funcs(fmap).ParseGlob("templates/*.html"))
+	store *sessions.MemcacheStore
 )
 
 func main() {
@@ -134,6 +135,8 @@ func main() {
 		dbConnPool <- conn
 		defer conn.Close()
 	}
+
+	store = sessions.NewMemcacheStore(memcachedServer, []byte(sessionSecret))
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", topHandler)
@@ -174,7 +177,6 @@ func prepareHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadSession(w http.ResponseWriter, r *http.Request) (session *sessions.Session, err error) {
-	store := sessions.NewMemcacheStore(memcachedServer, []byte(sessionSecret))
 	return store.Get(r, sessionName)
 }
 
