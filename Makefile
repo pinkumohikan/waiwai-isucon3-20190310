@@ -13,6 +13,8 @@ build:
 restart:
 	sudo service mysql restart
 	sudo service nginx restart
+	sudo service memcached restart
+	sudo supervisorctl restart isucon_go
 
 bench:
 	time sudo isucon3 benchmark -init="/home/isucon/waiwai-isucon3-20190310/init.sh" --workload 1
