@@ -1,3 +1,12 @@
-all:
+
+all: clean build restart
+
+clean:
+	sudo truncate --size 0 /var/lib/mysql/mysql-slow.log
+
+build:
 	./env.sh $(MAKE) -C go setup
+
+restart:
 	sudo service mysql restart
+	sudo service nginx restart
